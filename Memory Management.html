@@ -1,0 +1,301 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Memory Management — Keep Talking and Nobody Explodes Module</title>
+    <meta name="viewport" content="initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/font.css">
+    <script src="js/highlighter.js"></script>
+    <style>
+        table {
+            margin: 1em auto;
+            text-align: center;
+        }
+
+        div.heading {
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: underline;
+            text-align: center;
+        }
+
+        table.error-table, table.error-table td:nth-child(3) {
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="ManualContent">
+        <div class="section">
+            <div class="page page-bg-01">
+                <div class="page-header">
+                    <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
+                    <span class="page-header-section-title">Memory Management</span>
+                </div>
+                <div class="page-content">
+                    <img src="img/Component/Module Name.svg" class="diagram">
+                    <h2>On the Subject of Memory Management</h2>
+                    <p class="flavour-text">Your flavor text should go here.</p>
+
+                    <ul>
+                        <li>This module allows you direct access to one of the memory chips of the bomb. Luckily, all of the accesible memory addresses can be modified without worry of affecting the rest of the bomb.</li>
+                        <li>Note that all numbers in the form 0xXY in this manual refer to the hexadecimal number XY.</li>
+                        <li>The interface displays the values of memory addresses 0x10-0x13 in the top row and 0x20-0x2F in the remaining four rows (see Section 1 for details).</li>
+                        <li>If necessary, you must change the certain memory locations to the indicated values (see Section 2) using the below instructions (see Section 3).</li>
+                        <li>Enter instructions one hexadecimal character at a time.</li>
+                        <li>In addition, this interface is equipped with B.E.R. technology, so any mistakes will be caught and displayed with an error message (see Section 4).</li>
+                    </ul>
+
+                    <h3>Section 1. Important Memory Locations</h3>
+                    <table>
+                        <tr>
+                            <th>Memory Location</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>0x10</td>
+                            <td>RES</td>
+                            <td>Always set to the result/error code of the latest instruction or error message.</td>
+                        </tr>
+                        <tr>
+                            <td>0x11</td>
+                            <td>RES_PTR</td>
+                            <td>Always set to the second location where the result of the latest instruction will be stored, or 0x10 if such second location has not been set (see instruction 0xE0).</td>
+                        </tr>
+                        <tr>
+                            <td>0x12</td>
+                            <td>BYT_CTR</td>
+                            <td>Incremented with each byte inputted. Starts at 0x00.</td>
+                        </tr>
+                        <tr>
+                            <td>0x13</td>
+                            <td>INS_CTR</td>
+                            <td>Incremented with each instruction inputted.<br />Starts at 0x00.</td>
+                        </tr>
+
+                        <tr>
+                            <td>0x20-0x2F</td>
+                            <td>MEM</td>
+                            <td>Accesible memory. Stores information on many different parts of the bomb, modify with care.</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="page-footer relative-footer">Page 1 of 4</div>
+            </div>
+            <div class="page page-bg-02">
+                <div class="page-header">
+                    <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
+                    <span class="page-header-section-title">Memory Management</span>
+                </div>
+                <div class="page-content">
+                    <h3>Section 2. Required Memory Changes</h3>
+                    <p>In most cases, the memory will be set up properly. However, in the off-chance that there is any values that need to be changed, there should be a note on the module letting you know.</p>
+                    <div>
+                        <p>Note that some managers make mistakes or use uncommon practices when reporting the required changes. Here is a list of the most common ones. Be sure to account for these.</p>
+                        <table>
+                            <tr>
+                                <th>Manager Name</th>
+                                <th>Notes</th>
+                            </tr>
+                            <tr>
+                                <td>Matt Roberts</td>
+                                <td>Matt almost always finds a way to swap the latter two memory addresses around.</td>
+                            </tr>
+                            <tr>
+                                <td>Reese Johnson</td>
+                                <td>Reese likes to record memory addresses in hexadecimal,<br />as normal, but data values in decimal.</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--<table>
+                        <tr>
+                            <th>Memory Location</th>
+                            <th>Required Value</th>
+                        </tr>
+                        <tr>
+                            <td>[7 × (Port Count)] % 20</td>
+                            <td>(Indicator Count) × (Battery Count)</td>
+                        </tr>
+                        <tr>
+                            <td>[3 × (Module Count)] % 20</td>
+                            <td>2 × (Initial Value of Cell 0x25) + 3 ^ (Strikes)</td>
+                        </tr>
+                        <tr>
+                            <td>Lowest Initial Value of<br />Cells 0x20-0x2F</td>
+                            <td>Greatest Initial Value of<br />Cells 0x20-0x2F</td>
+                        </tr>
+                    </table>
+                    <div>
+                        <p>Notes regarding the above table:</p>
+                        <ol>
+                            <li>If a required memory location falls out of the range 0x20-0x2F, instead modify the value of the memory location which is a factor of 0x10 away from the required location in the range 0x20-0x2F.</li>
+                            <li>If two required memory locations point to the same address according to the table, the latter's actual address is obtained by adding 1 (wrapping back to 0x20 from 0x30) until it does not overlap another required location.</li>
+                            <li>The required values may be greater than or equal to 0x100. In that case, instead enter only the two least significant hexadecimal digits.</li>
+                        </ol>
+                    </div>-->
+                    <h3>Section 3. Built-in Instructions</h3>
+                    <p>All instructions take either one or two memory addresses as arguments and will act on the values at those addresses. There are 16 different instructions, each of which has INDEPENDENT and RELATIVE modes (signalled by 0xEX vs 0xFX instruction codes, respectively). In independent mode, instruction results will be stored in RES and the location specified by the value of RES_PTR (see Section 1). In relative mode, instruction results will be stored in RES and the first address argument passed with the instruction.</p>
+                    <table>
+                        <colgroup>
+                            <col style="width:100px;" />
+                            <col style="width:50px;" />
+                        </colgroup>
+                        <tr>
+                            <th>Instruction Code</th>
+                            <th>Name/<br />Arity</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>0xX0</td>
+                            <td>STR_1</td>
+                            <td>Sets the output location of the next instruction to the specified memory address. Returns the inputted address.</td>
+                        </tr>
+                        <tr>
+                            <td>0xX1</td>
+                            <td>INC_1</td>
+                            <td>Returns the value at the specified memory address, incremented by 1.</td>
+                        </tr>
+                        <tr>
+                            <td>0xX2</td>
+                            <td>DEC_1</td>
+                            <td>Returns the value at the specified memory address, decremented by 1.</td>
+                        </tr>
+                        <tr>
+                            <td>0xX3</td>
+                            <td>RST_1</td>
+                            <td>Resets the value at the specified memory address to 0. Returns the previous value at that address.</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="page-footer relative-footer">Page 2 of 4</div>
+            </div>
+            <div class="page page-bg-03">
+                <div class="page-header">
+                    <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
+                    <span class="page-header-section-title">Memory Management</span>
+                </div>
+                <div class="page-content">
+                    <table>
+                        <colgroup>
+                            <col style="width:100px;" />
+                            <col style="width:50px;" />
+                        </colgroup>
+                        <tr>
+                            <th>Instruction Code</th>
+                            <th>Name/<br />Arity</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>0xX4</td>
+                            <td>ADD_2</td>
+                            <td>Returns the sum of the values at the specified memory addresses.</td>
+                        </tr>
+                        <tr>
+                            <td>0xX5</td>
+                            <td>SUB_2</td>
+                            <td>Returns the difference of the values at the specified memory addresses.</td>
+                        </tr>
+                        <tr>
+                            <td>0xX6</td>
+                            <td>MUL_2</td>
+                            <td>Returns the product of the values at the specified memory addresses.</td>
+                        </tr>
+                        <tr>
+                            <td>0xX7</td>
+                            <td>DIV_2</td>
+                            <td>Returns the quotient of the values at the specified memory addresses.</td>
+                        </tr>
+                        <tr>
+                            <td>0xX8</td>
+                            <td>VAL_1</td>
+                            <td>Returns the value at the specified memory address.</td>
+                        </tr>
+                        <tr>
+                            <td>0xX9</td>
+                            <td>AND_2</td>
+                            <td>Returns the bitwise AND of the values at the specified memory addresses.</td>
+                        </tr>
+                        <tr>
+                            <td>0xXA</td>
+                            <td>IOR_2</td>
+                            <td>Returns the bitwise OR of the values at the specified memory addresses.</td>
+                        </tr>
+                        <tr>
+                            <td>0xXB</td>
+                            <td>EOR_2</td>
+                            <td>Returns the bitwise XOR of the values at the specified memory addresses.</td>
+                        </tr>
+                        <tr>
+                            <td>0xXC</td>
+                            <td>NOT_1</td>
+                            <td>Returns the bitwise NOT of the value at the specified memory address.</td>
+                        </tr>
+                        <tr>
+                            <td>0xXD</td>
+                            <td>NAN_2</td>
+                            <td>Returns the bitwise NAND of the values at the specified memory addresses.</td>
+                        </tr>
+                        <tr>
+                            <td>0xXE</td>
+                            <td>INR_2</td>
+                            <td>Returns the bitwise NOR of the values at the specified memory addresses.</td>
+                        </tr>
+                        <tr>
+                            <td>0xXF</td>
+                            <td>ENR_2</td>
+                            <td>Returns the bitwise XNOR of the values at the specified memory addresses.</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="page-footer relative-footer">Page 3 of 4</div>
+            </div>
+            <div class="page page-bg-03">
+                <div class="page-header">
+                    <span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
+                    <span class="page-header-section-title">Memory Management</span>
+                </div>
+                <div class="page-content">
+                    <h3>Section 4. Error Codes</h3>
+                    <p>Error codes are displayed for a small time whenever an error or mistake occurs.</p>
+                    <table>
+                        <colgroup>
+                            <col style="width:100px;" />
+                        </colgroup>
+                        <tr>
+                            <th>Error Code</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>0xA0</td>
+                            <td>Instruction does not exist.</td>
+                        </tr>
+                        <tr>
+                            <td>0xA1</td>
+                            <td>Memory location is not accessible.</td>
+                        </tr>
+                        <tr>
+                            <td>0xE0</td>
+                            <td>Input buffer non-empty. Clearing buffer.</td>
+                        </tr>
+                        <tr>
+                            <td>0xEF</td>
+                            <td>Unknown error.</td>
+                        </tr>
+                        <tr>
+                            <td>0xFF</td>
+                            <td>System overload. Resetting to initial state.</td>
+                        </tr>
+                    </table>
+                    <h3>Section 5. Resetting the Memory</h3>
+                    <p>To reset the memory of the chip to the initial state, use the reset instruction (0xE3) to set INS_CNT to 0x00.</p>
+                </div>
+                <div class="page-footer relative-footer">Page 4 of 4</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
